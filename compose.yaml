@@ -34,7 +34,7 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - n8n_storage:/home/node/.n8n
+      - n8n:/home/node/.n8n
       - ./n8n-app:/files
     networks:
       - n8n-app
@@ -51,7 +51,7 @@ services:
       - POSTGRES_NON_ROOT_USER
       - POSTGRES_NON_ROOT_PASSWORD
     volumes:
-      - postgres_n8n_storage:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
       - ./init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
@@ -68,7 +68,7 @@ services:
     security_opt:       
       - no-new-privileges:true 
     volumes:
-      - redis_n8n_storage:/data
+      - redis:/data
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
@@ -103,9 +103,9 @@ services:
 
 
 volumes:
-  n8n_storage:
-  postgres_n8n_storage:
-  redis_n8n_storage:
+  n8n:
+  postgres:
+  redis:
 
 networks:
   traefik:
